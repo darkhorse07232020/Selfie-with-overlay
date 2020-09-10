@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en-us" lang="en-us">
+<head>
+    <title>Photo Frame App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <style>
+        html, body, canvas {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: #000;
+        }
+
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+            border-top: 16px solid blue;
+            border-right: 16px solid green;
+            border-bottom: 16px solid red;
+            border-left: 16px solid pink;
+
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #shutter_icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: -25px;
+        }
+
+        .lds-hourglass {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            bottom: 20px;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+        }
+
+        .lds-hourglass:after {
+            content: " ";
+            display: block;
+            width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+            border-radius: 50%;
+            border: 75px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-hourglass 1.2s infinite;
+        }
+
+        @keyframes lds-hourglass {
+            0% {
+                transform: rotate(0);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            50% {
+                transform: rotate(900deg);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            100% {
+                transform: rotate(1800deg);
+            }
+        }
+
+        .switch {
+            position: absolute;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1593cc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #f34402;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        #filter_btn{
+
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            width: 60px;
+            height: 34px;
+            background-color: #f4511e;
+            border: none;
+            border-radius:34px;
+            color: white;
+            padding: 2px 2px;
+            text-align: center;
+            font-size: 12px;
+            margin: 4px 2px;
+            opacity: 0.6;
+            transition: 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button:hover {opacity: 1}
+    </style>
+</head>
+<body>
+<div id="loader"></div>
+
+<audio id="shutter" src="data/camera-shutter.mp3"></audio>
+<canvas id="canvasOutput" style="display: none"></canvas>
+<img id="shutter_icon" style="display: none" src="data/shutter.png"/>
+<div id="button_UI"
+     style="display:none;padding-left:10px;position: absolute;left:0;bottom: 60px;z-index: 10;">
+    <label class="switch">
+        <input type="checkbox" id="camid" checked>
+        <span class="slider round"></span>
+    </label>
+</div>
+
+<div id="click_animation" style="display: none;"></div>
+<button id="filter_btn" style="display: none" onclick="filter_button()">FILTER</button>
+<script>
+    if (location.protocol !== 'https:') {
+        location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
+</script>
+<script type="text/javascript" src="js/canvas-toBlob.js"></script>
+<script type="text/javascript" src="js/FileSaver.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/Filters.js"></script>
+<script type="text/javascript" src="js/Camera_overlay.js"></script>
+</body>
+</html>
